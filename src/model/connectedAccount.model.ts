@@ -36,6 +36,17 @@ const connectedAccountSchema: Schema<IConnectedAccount> = new Schema({
     }
 })
 
+connectedAccountSchema.index(
+    {
+        platform: 1,
+        handle: 1,
+    },
+    {
+        unique: true,
+    }
+);
+
+
 export default mongoose.models.ConnectedAccount ||
 mongoose.model<IConnectedAccount>(
     "ConnectedAccount",
