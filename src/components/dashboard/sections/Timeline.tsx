@@ -1,4 +1,4 @@
-import type { TimelineItem } from "@/data/mockDashboardData";
+import type { TimelineItem } from "@/types/dashboard";
 
 interface TimelineProps {
   items: TimelineItem[];

@@ -1,7 +1,7 @@
-import type { ProfileData } from "@/data/mockDashboardData";
+import type { DashboardProfile } from "@/types/dashboard";
 
 interface ProfileCardProps {
-  profile: ProfileData;
+  profile: DashboardProfile;
   username: string;
 }
 
@@ -40,6 +40,9 @@ export default function ProfileCard({ profile, username }: ProfileCardProps) {
       </div>
 
       <div className="grid grid-cols-2 gap-3 mt-5">
+        <div className="bg-gray-50 rounded-xl p-3"><p className="text-[9px] font-semibold text-gray-400 uppercase tracking-wider mb-1">Rating</p><p className="text-xs font-semibold text-gray-900 truncate">{profile.rating}</p></div>
+        <div className="bg-gray-50 rounded-xl p-3"><p className="text-[9px] font-semibold text-gray-400 uppercase tracking-wider mb-1">Max Rating</p><p className="text-xs font-semibold text-gray-900 truncate">{profile.maxRating}</p></div>
+        <div className="bg-gray-50 rounded-xl p-3"><p className="text-[9px] font-semibold text-gray-400 uppercase tracking-wider mb-1">Max Rank</p><p className="text-xs font-semibold text-gray-900 truncate">{profile.maxRank}</p></div>
         <div className="bg-gray-50 rounded-xl p-3">
           <p className="text-[9px] font-semibold text-gray-400 uppercase tracking-wider mb-1">Country</p>
           <div className="flex items-center gap-1.5">
@@ -47,7 +50,7 @@ export default function ProfileCard({ profile, username }: ProfileCardProps) {
             <span className="text-xs font-semibold text-gray-900 truncate">{profile.country}</span>
           </div>
         </div>
-        <div className="bg-gray-50 rounded-xl p-3">
+        <div className="bg-gray-50 rounded-xl p-3 col-span-2">
           <p className="text-[9px] font-semibold text-gray-400 uppercase tracking-wider mb-1">Organization</p>
           <p className="text-xs font-semibold text-gray-900 truncate">{profile.organization}</p>
         </div>

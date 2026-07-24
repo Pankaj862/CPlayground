@@ -1,7 +1,7 @@
 "use client";
 
 import { useState } from "react";
-import type { RatingPoint } from "@/data/mockDashboardData";
+import type { RatingPoint } from "@/types/dashboard";
 
 interface RatingChartProps {
   data: RatingPoint[];
@@ -27,7 +27,7 @@ export default function RatingChart({ data }: RatingChartProps) {
 
   const filtered = period === "6m" ? data.slice(-10) : data;
   const n = filtered.length;
-  if (n < 2) return null;
+  if (n < 2) return <div className="bg-white rounded-2xl border border-gray-100 p-6 shadow-sm animate-fade-in"><h2 className="text-sm font-semibold text-gray-900">Rating Progress</h2><p className="mt-4 text-sm text-gray-500">No contest history is available yet.</p></div>;
 
   const minR = Math.min(...filtered.map((d) => d.rating)) - 80;
   const maxR = Math.max(...filtered.map((d) => d.rating)) + 80;

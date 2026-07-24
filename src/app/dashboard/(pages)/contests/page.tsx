@@ -1,0 +1,13 @@
+"use client";
+
+import { useEffect, useState } from "react";
+import { Loading, Message, PageHeading } from "../profile/page";
+
+interface Contest { _id?: string; contestId?: number; contestName?: string; contestDate?: string; rank?: number; oldRating?: number; newRating?: number; delta?: number; }
+
+export default function ContestsPage() {
+  const [contests, setContests] = useState<Contest[] | null>(null); const [error, setError] = useState<string | null>(null);
+  useEffect(() => { const timer = window.setTimeout(() => void fetch("/api/dashboard/contests").then(async (response) => { const body = await response.json(); if (!response.ok || !body.success) throw new Error(body.message || "Unable to load contests."); setContests(body.contests ?? []); }).catch((reason: unknown) => setError(reason instanceof Error ? reason.message : "Unable to load contests.")), 0); return () => window.clearTimeout(timer); }, []);
+  if (error) return <Message title="Contests unavailable" message={error} />; if (!contests) return <Loading title="Loading contests..." />;
+  return <div className="space-y-6"><PageHeading title="Contests" description="Your Codeforces rating history and contest performance." /><section className="overflow-hidden rounded-2xl border border-gray-100 bg-white shadow-sm"><div className="overflow-x-auto"><table className="w-full min-w-[650px] text-left"><thead className="bg-[#F3F7FF] text-[10px] font-bold uppercase tracking-wider text-gray-500"><tr><th className="px-6 py-3">Contest</th><th className="px-4 py-3">Date</th><th className="px-4 py-3">Rank</th><th className="px-4 py-3">Rating</th><th className="px-6 py-3">Change</th></tr></thead><tbody className="divide-y divide-gray-100">{contests.length === 0 ? <tr><td colSpan={5} className="px-6 py-10 text-center text-sm text-gray-500">No contest history is available yet.</td></tr> : contests.map((contest, index) => <tr key={contest._id ?? `${contest.contestId}-${index}`} className="hover:bg-gray-50/70"><td className="px-6 py-4 text-sm font-semibold text-gray-900">{contest.contestName ?? "Codeforces contest"}</td><td className="px-4 py-4 text-xs text-gray-500">{contest.contestDate ? new Date(contest.contestDate).toLocaleDateString() : "-"}</td><td className="px-4 py-4 text-xs text-gray-700">{contest.rank ?? "-"}</td><td className="px-4 py-4 text-xs text-gray-700">{contest.newRating ?? "-"}</td><td className={`px-6 py-4 text-xs font-semibold ${(contest.delta ?? 0) >= 0 ? "text-emerald-600" : "text-red-500"}`}>{contest.delta === undefined ? "-" : `${contest.delta >= 0 ? "+" : ""}${contest.delta}`}</td></tr>)}</tbody></table></div></section></div>;
+}

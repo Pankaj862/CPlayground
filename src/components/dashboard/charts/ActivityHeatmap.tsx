@@ -1,4 +1,4 @@
-import type { ActivityDay } from "@/data/mockDashboardData";
+import type { ActivityDay } from "@/types/dashboard";
 
 interface ActivityHeatmapProps {
   data: ActivityDay[];

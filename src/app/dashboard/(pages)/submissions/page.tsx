@@ -1,0 +1,14 @@
+"use client";
+
+import { useEffect, useState } from "react";
+import { Loading, Message, PageHeading } from "../profile/page";
+
+interface Submission { _id?: string; contestId?: number; problemId?: string; problemName?: string; programmingLanguage?: string; verdict?: string; solvedAt?: string; }
+const labels: Record<string, string> = { OK: "Accepted", WRONG_ANSWER: "Wrong Answer", TIME_LIMIT_EXCEEDED: "TLE", MEMORY_LIMIT_EXCEEDED: "MLE", RUNTIME_ERROR: "Runtime Error", COMPILATION_ERROR: "Compilation Error" };
+
+export default function SubmissionsPage() {
+  const [submissions, setSubmissions] = useState<Submission[] | null>(null); const [error, setError] = useState<string | null>(null);
+  useEffect(() => { const timer = window.setTimeout(() => void fetch("/api/dashboard/submissions").then(async (response) => { const body = await response.json(); if (!response.ok || !body.success) throw new Error(body.message || "Unable to load submissions."); setSubmissions(body.submissions ?? []); }).catch((reason: unknown) => setError(reason instanceof Error ? reason.message : "Unable to load submissions.")), 0); return () => window.clearTimeout(timer); }, []);
+  if (error) return <Message title="Submissions unavailable" message={error} />; if (!submissions) return <Loading title="Loading submissions..." />;
+  return <div className="space-y-6"><PageHeading title="Submissions" description="Your most recent Codeforces submissions." /><section className="overflow-hidden rounded-2xl border border-gray-100 bg-white shadow-sm"><div className="overflow-x-auto"><table className="w-full min-w-[650px] text-left"><thead className="bg-[#F3F7FF] text-[10px] font-bold uppercase tracking-wider text-gray-500"><tr><th className="px-6 py-3">Problem</th><th className="px-4 py-3">Language</th><th className="px-4 py-3">Verdict</th><th className="px-6 py-3">Submitted</th></tr></thead><tbody className="divide-y divide-gray-100">{submissions.length === 0 ? <tr><td colSpan={4} className="px-6 py-10 text-center text-sm text-gray-500">No submissions are available yet.</td></tr> : submissions.map((submission, index) => <tr key={submission._id ?? `${submission.contestId}-${submission.problemId}-${index}`} className="hover:bg-gray-50/70"><td className="px-6 py-4"><p className="text-sm font-semibold text-gray-900">{submission.problemName ?? "Unknown problem"}</p><p className="mt-0.5 text-[10px] text-gray-400">Codeforces #{submission.contestId ?? "-"}</p></td><td className="px-4 py-4 text-xs text-gray-700">{submission.programmingLanguage ?? "-"}</td><td className={`px-4 py-4 text-xs font-semibold ${submission.verdict === "OK" ? "text-emerald-600" : "text-red-500"}`}>{labels[submission.verdict ?? ""] ?? submission.verdict ?? "-"}</td><td className="px-6 py-4 text-xs text-gray-500">{submission.solvedAt ? new Date(submission.solvedAt).toLocaleString() : "-"}</td></tr>)}</tbody></table></div></section></div>;
+}

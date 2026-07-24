@@ -1,0 +1,5 @@
+import { PageHeading } from "../profile/page";
+
+export default function SettingsPage() {
+  return <div className="space-y-6"><PageHeading title="Settings" description="Manage your dashboard and account preferences." /><div className="grid gap-6 lg:grid-cols-2"><section className="rounded-2xl border border-gray-100 bg-white p-6 shadow-sm"><h2 className="text-sm font-semibold text-gray-900">Profile settings</h2><p className="mt-2 text-sm text-gray-500">Your visible profile details are synced from Codeforces.</p><button disabled className="mt-5 rounded-xl border border-gray-200 px-4 py-2 text-xs font-semibold text-gray-400">Profile editing coming soon</button></section><section className="rounded-2xl border border-gray-100 bg-white p-6 shadow-sm"><h2 className="text-sm font-semibold text-gray-900">Connected account</h2><p className="mt-2 text-sm text-gray-500">Codeforces connection management will be available here.</p><button disabled className="mt-5 rounded-xl border border-gray-200 px-4 py-2 text-xs font-semibold text-gray-400">Account controls coming soon</button></section></div></div>;
+}

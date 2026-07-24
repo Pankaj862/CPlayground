@@ -1,4 +1,4 @@
-import type { SuccessRateData } from "@/data/mockDashboardData";
+import type { SuccessRateData } from "@/types/dashboard";
 
 interface SuccessRateProps {
   data: SuccessRateData;
@@ -6,16 +6,16 @@ interface SuccessRateProps {
 
 export default function SuccessRate({ data }: SuccessRateProps) {
   const total = data.accepted + data.wrongAnswer + data.other;
-  const pct = Math.round((data.accepted / total) * 100);
+  const pct = total === 0 ? 0 : Math.round((data.accepted / total) * 100);
   const R = 46;
   const CX = 62;
   const CY = 62;
   const SW = 14;
   const CIRC = 2 * Math.PI * R;
 
-  const accLen = (data.accepted / total) * CIRC;
-  const waLen = (data.wrongAnswer / total) * CIRC;
-  const otherLen = (data.other / total) * CIRC;
+  const accLen = total === 0 ? 0 : (data.accepted / total) * CIRC;
+  const waLen = total === 0 ? 0 : (data.wrongAnswer / total) * CIRC;
+  const otherLen = total === 0 ? 0 : (data.other / total) * CIRC;
   const accOffset = 0;
   const waOffset = -accLen;
   const otherOffset = -(accLen + waLen);

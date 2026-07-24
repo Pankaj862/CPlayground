@@ -1,4 +1,4 @@
-import type { TopicTag } from "@/data/mockDashboardData";
+import type { TopicTag } from "@/types/dashboard";
 
 interface TopicMasteryProps {
   topics: TopicTag[];

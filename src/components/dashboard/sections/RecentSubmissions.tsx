@@ -1,11 +1,11 @@
 import Link from "next/link";
-import type { Submission } from "@/data/mockDashboardData";
+import type { DashboardSubmission } from "@/types/dashboard";
 
 interface RecentSubmissionsProps {
-  submissions: Submission[];
+  submissions: DashboardSubmission[];
 }
 
-const VERDICT_STYLES: Record<Submission["verdict"], { label: string; className: string }> = {
+const VERDICT_STYLES: Record<DashboardSubmission["verdict"], { label: string; className: string }> = {
   Accepted: { label: "Accepted", className: "text-emerald-600" },
   "Wrong Answer": { label: "Wrong Answer", className: "text-red-500" },
   TLE: { label: "TLE", className: "text-violet-600" },
@@ -14,7 +14,7 @@ const VERDICT_STYLES: Record<Submission["verdict"], { label: string; className: 
   CE: { label: "CE", className: "text-gray-500" },
 };
 
-function VerdictIcon({ verdict }: { verdict: Submission["verdict"] }) {
+function VerdictIcon({ verdict }: { verdict: DashboardSubmission["verdict"] }) {
   if (verdict === "Accepted") {
     return (
       <svg className="h-3.5 w-3.5" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2.25} aria-hidden="true">
@@ -51,6 +51,7 @@ export default function RecentSubmissions({ submissions }: RecentSubmissionsProp
             </tr>
           </thead>
           <tbody className="divide-y divide-gray-100">
+            {submissions.length === 0 && <tr><td colSpan={4} className="px-5 py-8 text-center text-sm text-gray-500">No submissions are available yet.</td></tr>}
             {submissions.map((submission) => {
               const verdict = VERDICT_STYLES[submission.verdict];
               const language = submission.languageVersion
