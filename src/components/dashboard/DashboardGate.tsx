@@ -1,7 +1,7 @@
 "use client";
 
 import { useCallback, useEffect, useMemo, useState } from "react";
-import { useSession } from "next-auth/react";
+import { signOut, useSession } from "next-auth/react";
 import DashboardShell from "@/components/dashboard/layout/DashboardShell";
 import StatsCards from "@/components/dashboard/cards/StatsCards";
 import ProfileCard from "@/components/dashboard/sections/ProfileCard";
@@ -53,7 +53,12 @@ function activityFrom(submissions: ApiSubmission[]): ActivityDay[] {
 function ConnectCodeforces({ onConnected }: { onConnected: () => Promise<void> }) {
   const [handle, setHandle] = useState("");
   const [progress, setProgress] = useState<string | null>(null);
+  const [isLoggingOut, setIsLoggingOut] = useState(false);
   const [notice, setNotice] = useState<{ kind: "success" | "error"; message: string } | null>(null);
+  const logout = async () => {
+    setIsLoggingOut(true);
+    await signOut({ callbackUrl: "/" });
+  };
   const connect = async (event: React.FormEvent) => {
     event.preventDefault();
     if (!handle.trim()) { setNotice({ kind: "error", message: "Enter your Codeforces handle to continue." }); return; }
@@ -67,8 +72,12 @@ function ConnectCodeforces({ onConnected }: { onConnected: () => Promise<void> }
     } catch (error) { setNotice({ kind: "error", message: error instanceof Error ? error.message : "Unable to connect Codeforces." }); }
     finally { setProgress(null); }
   };
-  return <main className="min-h-screen bg-[#F8F9FB] px-4 py-12 sm:flex sm:items-center sm:justify-center">
+  return <main className="relative min-h-screen bg-[#F8F9FB] px-4 py-12 sm:flex sm:items-center sm:justify-center">
     {notice && <div role="status" className={`fixed right-4 top-4 z-50 max-w-sm rounded-xl px-4 py-3 text-sm font-medium text-white shadow-lg ${notice.kind === "success" ? "bg-emerald-600" : "bg-red-600"}`}>{notice.message}</div>}
+    <Button variant="outline" size="sm" className="absolute right-4 top-4" onClick={logout} isLoading={isLoggingOut} aria-label="Log out">
+      {!isLoggingOut && <svg className="h-3.5 w-3.5" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2} aria-hidden="true"><path strokeLinecap="round" strokeLinejoin="round" d="M15.75 9V5.25A2.25 2.25 0 0013.5 3h-6A2.25 2.25 0 005.25 5.25v13.5A2.25 2.25 0 007.5 21h6a2.25 2.25 0 002.25-2.25V15M18 12H9m9 0-3-3m3 3-3 3" /></svg>}
+      <span>Logout</span>
+    </Button>
     <section className="w-full max-w-md rounded-2xl border border-gray-100 bg-white p-7 shadow-sm sm:p-8"><div className="flex h-12 w-12 items-center justify-center rounded-xl bg-[#F3F7FF] text-xl font-extrabold text-[#FF6B00]">CF</div><h1 className="mt-6 text-2xl font-bold text-gray-900">Connect your Codeforces Account</h1><p className="mt-2 text-sm leading-6 text-gray-500">Connect your Codeforces account to unlock your coding analytics, rating history and contest insights.</p><form className="mt-7 space-y-5" onSubmit={connect}><Input label="Codeforces handle" placeholder="e.g. tourist" value={handle} onChange={(event) => setHandle(event.target.value)} disabled={Boolean(progress)} autoComplete="username" />{progress && <p className="flex items-center gap-2 text-xs font-medium text-gray-500"><span className="h-3.5 w-3.5 animate-spin rounded-full border-2 border-[#FF6B00] border-t-transparent" />{progress}</p>}<Button type="submit" size="lg" fullWidth isLoading={Boolean(progress)}>{progress ? "Syncing..." : "Connect Codeforces"}</Button></form></section>
   </main>;
 }

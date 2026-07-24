@@ -1,10 +1,20 @@
 "use client";
 
+import { useState } from "react";
+import { signOut } from "next-auth/react";
+import Button from "@/components/ui/Button";
+
 interface DashboardNavbarProps {
   onToggleSidebar: () => void;
 }
 
 export default function DashboardNavbar({ onToggleSidebar }: DashboardNavbarProps) {
+  const [isLoggingOut, setIsLoggingOut] = useState(false);
+  const logout = async () => {
+    setIsLoggingOut(true);
+    await signOut({ callbackUrl: "/" });
+  };
+
   return (
     <header className="h-16 bg-white border-b border-gray-100 flex items-center px-4 sm:px-6 gap-3 sticky top-0 z-20 shrink-0">
       {/* Hamburger */}
@@ -62,6 +72,10 @@ export default function DashboardNavbar({ onToggleSidebar }: DashboardNavbarProp
           </svg>
           <span className="hidden sm:inline">New Code</span>
         </button>
+        <Button variant="outline" size="sm" className="ml-1 px-2.5 sm:px-3.5" onClick={logout} isLoading={isLoggingOut} aria-label="Log out">
+          {!isLoggingOut && <svg className="h-3.5 w-3.5" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2} aria-hidden="true"><path strokeLinecap="round" strokeLinejoin="round" d="M15.75 9V5.25A2.25 2.25 0 0013.5 3h-6A2.25 2.25 0 005.25 5.25v13.5A2.25 2.25 0 007.5 21h6a2.25 2.25 0 002.25-2.25V15M18 12H9m9 0-3-3m3 3-3 3" /></svg>}
+          <span className="hidden sm:inline">Logout</span>
+        </Button>
       </div>
     </header>
   );
