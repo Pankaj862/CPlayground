@@ -1,36 +1,231 @@
-This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://nextjs.org/docs/app/api-reference/cli/create-next-app).
+# 🚀 CPlayground
 
-## Getting Started
+> A modern competitive programming analytics platform built with Next.js, TypeScript, MongoDB, and NextAuth.
 
-First, run the development server:
+![Next.js](https://img.shields.io/badge/Next.js-15-black)
+![TypeScript](https://img.shields.io/badge/TypeScript-5.0-blue)
+![MongoDB](https://img.shields.io/badge/MongoDB-Database-green)
+![NextAuth](https://img.shields.io/badge/Authentication-NextAuth-orange)
+![License](https://img.shields.io/badge/License-MIT-yellow)
+
+---
+
+## 📌 Overview
+
+CPlayground helps competitive programmers track their Codeforces performance through an intuitive dashboard.
+
+Users can connect their Codeforces account, sync their contest history and submissions, and visualize their progress with real-time analytics.
+
+---
+
+## ✨ Features
+
+### 🔐 Authentication
+- Secure authentication with NextAuth
+- User registration & login
+- Protected dashboard routes
+
+### 👤 Codeforces Integration
+- Connect Codeforces account
+- Sync profile
+- Sync contest history
+- Sync submissions
+
+### 📊 Dashboard
+- Current Rating
+- Max Rating
+- Contest Count
+- Solved Problems
+- Success Rate
+- Total Submissions
+- Rating Progress
+- Profile Overview
+
+### 📈 Analytics
+- Contest history
+- Rating progression
+- Recent submissions
+- Performance insights
+- Ready for future heatmaps & topic analytics
+
+---
+
+## 🛠 Tech Stack
+
+### Frontend
+- Next.js (App Router)
+- React
+- TypeScript
+- Tailwind CSS
+- shadcn/ui
+
+### Backend
+- Next.js API Routes
+- NextAuth
+- MongoDB
+- Mongoose
+
+### APIs
+- Codeforces API
+
+---
+
+## 📂 Project Structure
+
+```text
+src/
+│
+├── app/
+│   ├── api/
+│   │   ├── auth/
+│   │   ├── connect/
+│   │   ├── dashboard/
+│   │   └── sync/
+│   │
+│   ├── dashboard/
+│   ├── sign-in/
+│   └── sign-up/
+│
+├── components/
+│
+├── model/
+│
+├── lib/
+│
+└── data/
+```
+
+---
+
+## 🚀 Getting Started
+
+### Clone the repository
+
+```bash
+git clone https://github.com/Pankaj862/CPlayground.git
+```
+
+### Install dependencies
+
+```bash
+npm install
+```
+
+### Create `.env.local`
+
+```env
+MONGODB_URI=your_mongodb_uri
+
+NEXTAUTH_SECRET=your_secret
+
+NEXTAUTH_URL=http://localhost:3000
+```
+
+### Start development server
 
 ```bash
 npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-# or
-bun dev
 ```
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+---
 
-You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
+## 📡 API Endpoints
 
-This project uses [`next/font`](https://nextjs.org/docs/app/building-your-application/optimizing/fonts) to automatically optimize and load [Geist](https://vercel.com/font), a new font family for Vercel.
+### Authentication
 
-## Learn More
+```
+POST /api/sign-up
+POST /api/auth/[...nextauth]
+```
 
-To learn more about Next.js, take a look at the following resources:
+### Dashboard
 
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
+```
+GET /api/dashboard/profile
+GET /api/dashboard/stats
+GET /api/dashboard/contests
+GET /api/dashboard/submissions
+```
 
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js) - your feedback and contributions are welcome!
+### Codeforces
 
-## Deploy on Vercel
+```
+POST /api/connect/codeforces
 
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
+POST /api/sync/codeforces/profile
 
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/building-your-application/deploying) for more details.
+POST /api/sync/codeforces/contests
+
+POST /api/sync/codeforces/submissions
+```
+
+---
+
+## 📷 Screenshots
+
+> Add screenshots here after deployment.
+
+- Landing Page
+- Dashboard
+- Profile
+- Contest History
+- Analytics
+
+---
+
+## 🎯 Future Improvements
+
+- Heatmap Calendar
+- Topic-wise Analysis
+- CodeChef Integration
+- LeetCode Integration
+- Contest Reminders
+- Leaderboard
+- Friend Comparison
+- Bookmark Problems
+- AI Performance Insights
+
+---
+
+## 🤝 Contributing
+
+Contributions are welcome!
+
+1. Fork the project
+2. Create your feature branch
+
+```bash
+git checkout -b feature/NewFeature
+```
+
+3. Commit changes
+
+```bash
+git commit -m "Add New Feature"
+```
+
+4. Push
+
+```bash
+git push origin feature/NewFeature
+```
+
+5. Open a Pull Request
+
+---
+
+## 📄 License
+
+This project is licensed under the MIT License.
+
+---
+
+## 👨‍💻 Author
+
+**Pankaj Bisht**
+
+GitHub: https://github.com/Pankaj862
+
+---
+
+⭐ If you found this project helpful, consider giving it a star!
