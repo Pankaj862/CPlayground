@@ -63,7 +63,8 @@ const submissionSchema: Schema<IsubmissionSchema> = new Schema({
      solvedAt: {
         type: Date,
         required: true
-     }
+     },
+     
 },{
    timestamps:true
 })
