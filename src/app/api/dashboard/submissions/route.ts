@@ -5,8 +5,6 @@ import dbConnect from "@/lib/dbConnect";
 
 import userModel from "@/model/user.model";
 import connectedAccountModel from "@/model/connectedAccount.model";
-import profileModel from "@/model/profile.model";
-import contestModel from "@/model/contest.model";
 import submissionModel from "@/model/sumbission.model";
 
 export async function GET() {
@@ -52,55 +50,23 @@ export async function GET() {
             return Response.json({
                 success: true,
                 connected: false,
+                submissions: [],
             });
         }
 
-        const profile = await profileModel.findOne({
-            connectedAccountId: connectedAccount._id,
-        });
-
-        const totalContests = await contestModel.countDocuments({
-            connectedAccountId: connectedAccount._id,
-        });
-
-        const totalSolved = await submissionModel.countDocuments({
-            connectedAccountId: connectedAccount._id,
-            verdict: "OK",
-        });
-
-        const totalSubmissions = await submissionModel.countDocuments({
-            connectedAccountId: connectedAccount._id,
-        });
-
-        const successRate =
-            totalSubmissions === 0
-                ? 0
-                : Number(
-                      (
-                          (totalSolved / totalSubmissions) *
-                          100
-                      ).toFixed(1)
-                  );
+        const submissions = await submissionModel
+            .find({
+                connectedAccountId: connectedAccount._id,
+            })
+            .sort({ solvedAt: -1 })
+            .limit(100);
 
         return Response.json({
             success: true,
             connected: true,
-
-            stats: {
-                currentRating: profile?.rating ?? null,
-                maxRating: profile?.maxRating ?? null,
-                rank: profile?.rank ?? null,
-                maxRank: profile?.maxRank ?? null,
-
-                contests: totalContests,
-
-                solvedProblems: totalSolved,
-
-                totalSubmissions,
-
-                successRate,
-            },
+            submissions,
         });
+
     } catch (error) {
         console.error(error);
 
